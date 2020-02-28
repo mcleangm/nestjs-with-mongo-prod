@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
 
+// jwt
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from '../constants/jwt.constants';
+
 // controllers
 import { UsersController } from './users.controller';
 
@@ -16,7 +20,10 @@ import { UserSchema } from './schemas/users.schema';
 import { PasswordHasherService } from './auth/password-hasher/password-hasher.service';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }])],
+  imports: [
+    JwtModule.register({ secret: jwtConstants.secret }),
+    MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }])
+  ],
   controllers: [UsersController],
   providers: [UsersService, PasswordHasherService],
 })

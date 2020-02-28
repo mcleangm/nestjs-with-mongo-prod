@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 
 // interfaces
-import { User, SignupRsp } from './interfaces/user.interface';
+import { User, SignupRsp, LoginRsp } from './interfaces/user.interface';
 
 // services
 import { UsersService } from './users.service';
@@ -14,7 +14,15 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Post('signup')
-  async signUp(@Body() user: CreateUserDTO): Promise<SignupRsp> {
+  async signup(@Body() user: CreateUserDTO): Promise<SignupRsp> {
     return await this.userService.signup(user);
   }
+
+  @Post('login')
+  async login(@Body() user: CreateUserDTO): Promise<LoginRsp> {
+    console.log('LOGIN ENDPOINT');
+
+    return await this.userService.login(user);
+  }
+
 }
