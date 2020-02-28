@@ -12,9 +12,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 // schemas
 import { UserSchema } from './schemas/users.schema';
 
+// services
+import { PasswordHasherService } from './auth/password-hasher/password-hasher.service';
+
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }])],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, PasswordHasherService],
 })
 export class UsersModule {}
