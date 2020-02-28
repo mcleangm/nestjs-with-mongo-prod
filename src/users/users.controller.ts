@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Request, UseGuards } from '@nestjs/common';
 
 // interfaces
 import { User, SignupRsp, LoginRsp } from './interfaces/user.interface';
@@ -8,6 +8,10 @@ import { UsersService } from './users.service';
 
 // data transfer object
 import { CreateUserDTO } from './dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+
+// guards
+import { RolesGuard } from '../common/roles-guard';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +27,13 @@ export class UsersController {
     console.log('LOGIN ENDPOINT');
 
     return await this.userService.login(user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RolesGuard)
+  @Get('profile')
+  async profile(@Request() req) {
+    return req.user;
   }
 
 }

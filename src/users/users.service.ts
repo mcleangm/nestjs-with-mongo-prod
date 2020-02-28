@@ -47,7 +47,7 @@ export class UsersService {
   }
 
   async login(doc: CreateUserDTO): Promise<LoginRsp> {
-    console.log('user.servie login...');
+    console.log('user.service login...');
     // verify user email
     const user = await this.userModel.findOne( { email: doc.email });
     if (!user) {
@@ -59,9 +59,9 @@ export class UsersService {
     if (matchedPassword) {
       // generate json web token
       const token = await this.jwtService.signAsync({
-        id: user.id,
+        id: user._id,
         email: user.email
-      });
+      }, { expiresIn: '1d' });
 
       return { token };
 
@@ -69,5 +69,14 @@ export class UsersService {
       throw new UnauthorizedException('Invalid password');
     }
 
+  }
+
+  async validateUserById(userId: string): Promise<boolean> {
+    const user = await this.userModel.findById(userId);
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
