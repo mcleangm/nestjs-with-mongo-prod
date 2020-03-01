@@ -17,6 +17,11 @@ async function bootstrap() {
     .setDescription('JSWT Authentication demo with MongoDB')
     .setVersion('1.0')
     .addTag('users')
+    .addSecurity('basic', {
+      type: 'http',
+      scheme: 'basic',
+    })
+    .addBearerAuth()
     .build()
 
   const document = SwaggerModule.createDocument(app, options);
